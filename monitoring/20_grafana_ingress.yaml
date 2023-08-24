@@ -4,7 +4,7 @@ metadata:
   name: grafana-nginx-ingress
   namespace: monitoring
   annotations:
-     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   #tls:
   #  - hosts:

@@ -7,26 +7,9 @@ spec:
   selector:
     app: grafana
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: grafana-nginx-ingress
-  namespace: monitoring
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  rules:
-  - host: pi
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: grafana
-              port:
-                number: 80
+  - name: http
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  sessionAffinity: None
+  type: LoadBalancer

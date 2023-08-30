@@ -15,6 +15,10 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
       containers:
       - name: grafana
         image: grafana/grafana-enterprise:latest
@@ -29,13 +33,13 @@ spec:
             path: /api/health
             port: 3000
             scheme: HTTP
-          initialDelaySeconds: 20
+          initialDelaySeconds: 10
           periodSeconds: 30
           successThreshold: 1
           timeoutSeconds: 2
         livenessProbe:
           failureThreshold: 3
-          initialDelaySeconds: 20
+          initialDelaySeconds: 30
           periodSeconds: 10
           successThreshold: 1
           tcpSocket:
@@ -44,7 +48,41 @@ spec:
         volumeMounts:
           - mountPath: /var/lib/grafana
             name: grafana-pv
+      - name: nginx-sidecar
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8081
+            name: nginx-sc
+            protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 2
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8081
+          timeoutSeconds: 1        
+        volumeMounts:
+          - name: nginx-sc-cfg
+            mountPath: /etc/nginx/conf.d
+        #env:
+        #- name: NGINX_PORT
+        #  value: 3002
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: nginx-sc-cfg
+          configMap:
+            name: grafana-nginx-sc.conf

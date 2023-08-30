@@ -11,9 +11,16 @@ spec:
   #      - 'pi'
   #      secretName: pi-secret
   rules:
-  - host: pi
+  - host: metric.opslandia.com
     http:
       paths:
+        - path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: grafana
+              port:
+                number: 8081
         - path: /
           pathType: Prefix
           backend:

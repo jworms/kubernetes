@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-speedtest
+  namespace: monitoring
+  labels:
+    app: prometheus-speedtest
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: prometheus-speedtest
+  template:
+    metadata:
+      labels:
+        app: prometheus-speedtest
+    spec:
+      containers:
+        - name: prometheus-speedtest
+          image: jraviles/prometheus_speedtest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9516
+              name: http-speedtest
+              protocol: TCP

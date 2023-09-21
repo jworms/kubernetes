@@ -14,7 +14,16 @@ spec:
   - host: metric.opslandia.com
     http:
       paths:
-        - path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
+        - path: /.well-known
+          #- path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: grafana
+              port:
+                number: 8081
+        - path: /health_nginx
+          #- path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
           pathType: ImplementationSpecific
           backend:
             service:

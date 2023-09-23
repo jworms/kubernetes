@@ -28,6 +28,6 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: prometheus-speedtest
+              name: prometheus
               port:
                 number: 9516

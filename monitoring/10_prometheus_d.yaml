@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-speedtest
+  name: prometheus
   namespace: monitoring
   labels:
-    app: prometheus-speedtest
+    app: prometheus
 spec:
-  replicas: 2
+  replicas: 1 # 1 because can't use readwritemany on volume
   selector:
     matchLabels:
-      app: prometheus-speedtest
+      app: prometheus
   template:
     metadata:
       labels:
-        app: prometheus-speedtest
+        app: prometheus
     spec:
       containers:
         - name: prometheus-speedtest
@@ -23,3 +23,65 @@ spec:
             - containerPort: 9516
               name: http-speedtest
               protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 9516
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9516
+            timeoutSeconds: 1
+        - name: prometheus
+          image: prom/prometheus
+          # config_map = /etc/prometheus/prometheus.yml
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090
+              name: http-prometheus
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /graph
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 9090
+            timeoutSeconds: 1
+          volumeMounts:
+            - mountPath: /prometheus
+              name: prometheus-pv
+            - mountPath: /etc/prometheus/prometheus.yml
+              name: prometheus-yml-cfg
+              readOnly: true
+              subPath: prometheus-yml.conf
+      volumes:
+        - name: prometheus-pv
+          persistentVolumeClaim:
+            claimName: prometheus-pvc
+        - name: prometheus-yml-cfg
+          configMap:
+            name: prometheus-yml.conf
+            defaultMode: 420
+            items:
+            - key: prometheus-yml.conf
+              path: prometheus-yml.conf

@@ -76,9 +76,6 @@ spec:
         volumeMounts:
           - name: nginx-sc-cfg
             mountPath: /etc/nginx/conf.d
-        #env:
-        #- name: NGINX_PORT
-        #  value: 3002
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:

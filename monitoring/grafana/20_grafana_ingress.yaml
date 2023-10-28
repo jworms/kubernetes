@@ -4,13 +4,14 @@ metadata:
   name: grafana-nginx-ingress
   namespace: monitoring
   annotations:
-     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+     cert-manager.io/cluster-issuer: opslandia-tls-cert
 spec:
   ingressClassName: nginx
-  #tls:
-  #  - hosts:
-  #      - 'pi'
-  #      secretName: pi-secret
+  tls:
+    - hosts:
+      - metric.opslandia.com
+      secretName: opslandia-tls-cert
   rules:
   - host: metric.opslandia.com
     http:
@@ -38,3 +39,13 @@ spec:
               name: grafana
               port:
                 number: 3000
+  - host: pi
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: prometheus
+              port:
+                number: 9090

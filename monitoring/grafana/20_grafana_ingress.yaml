@@ -17,7 +17,6 @@ spec:
     http:
       paths:
         - path: /.well-known
-          #- path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
           pathType: ImplementationSpecific
           backend:
             service:
@@ -25,7 +24,6 @@ spec:
               port:
                 number: 8081
         - path: /health_nginx
-          #- path: /.well-known/acme-challenge/eJx8lXGoRuevtOwU-fu0r1c_N_FjaMirTJsebdGZJ3g
           pathType: ImplementationSpecific
           backend:
             service:

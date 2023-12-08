@@ -43,7 +43,6 @@ spec:
             timeoutSeconds: 1
         - name: prometheus
           image: prom/prometheus
-          # config_map = /etc/prometheus/prometheus.yml
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090

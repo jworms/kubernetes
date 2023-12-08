@@ -1,3 +1,0 @@
-[submodule "letsencrypt-certs"]
-	path = letsencrypt-certs
-	url = https://github.com/nabsul/k8s-letsencrypt.git

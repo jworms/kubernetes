@@ -16,13 +16,6 @@ spec:
   - host: metric.opslandia.com
     http:
       paths:
-        - path: /.well-known
-          pathType: ImplementationSpecific
-          backend:
-            service:
-              name: grafana
-              port:
-                number: 8081
         - path: /health_nginx
           pathType: ImplementationSpecific
           backend:

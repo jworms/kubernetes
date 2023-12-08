@@ -4,7 +4,7 @@ metadata:
   name: prometheus-pvc
 spec:
   accessModes:
-    - ReadWriteOnce #many not supported :\
+    - ReadWriteOnce #many not supported
   resources:
     requests:
       storage: 2Gi

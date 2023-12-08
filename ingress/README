@@ -1,3 +1,2 @@
 Yaml copied from https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
 - Note the version. Check for updates regularly.
-- Modified the ingress ports to be 8080 and 4434 to prevent conflicts. TO DO: Move ingress to another node.

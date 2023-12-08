@@ -5,7 +5,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: jworms  # The service account to bind
-    namespace: kube-system # I don't think this NS matters from what I read
+    namespace: kube-system # use kube-system until better option is built
 roleRef:
   kind: ClusterRole
   name: admin-cluster-role  # Reference the cluster role defined above
